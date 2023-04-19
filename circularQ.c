@@ -1,10 +1,3 @@
-/**
- * circularQ.c
- *
- * School of Computer Science, 
- * Chungbuk National University
- */
-
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -31,7 +24,7 @@ element getElement();
 int main(void)
 {
     printf("[---------[최 현 철]    [2022078014]---------]");
-    
+
 	QueueType *cQ = createQueue();  //createQueue함수를 호출하여 포인터 cQ에 큐를 저장할 공간을 할당 받는다.
 	element data;                   //char data를 선언한다.
 
@@ -111,7 +104,7 @@ int isEmpty(QueueType *cQ)
 
 int isFull(QueueType *cQ)
 {
-	if (((cQ->rear+1)%MAX_QUEUE_SIZE) == cQ->front) {   //%MAX_QUEUE_SIZE를 이용하여 0~MAX_QUEUE_SIZE-1 에서 rear가 순환하도록 한다.
+	if (((cQ->rear+1)%MAX_QUEUE_SIZE) == cQ->front) {   // % MAX_QUEUE_SIZE를 이용하여 0~MAX_QUEUE_SIZE-1 에서 rear가 순환하도록 한다.
 		printf(" Circular Queue is full!");
 		return 1;
 	}
