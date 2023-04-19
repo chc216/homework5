@@ -30,6 +30,8 @@ element getElement();
 
 int main(void)
 {
+    printf("[---------[최 현 철]    [2022078014]---------]");
+    
 	QueueType *cQ = createQueue();  //createQueue함수를 호출하여 포인터 cQ에 큐를 저장할 공간을 할당 받는다.
 	element data;                   //char data를 선언한다.
 
