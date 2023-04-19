@@ -120,11 +120,11 @@ precedence getPriority(char x)
 {
      return getToken(x);
 }
-/**
+/***
 * 문자하나를 전달받아, postfixExp에 추가 */
 void charCat(char* c)
 {
-     if (postfixExp[0] == '\0')    //reset함수에서 해당 함수를 호출했을 시, postfixexp엔 
+     if (postfixExp[0] == '\0')    //postfixExp문자열이 비어잇는지 검사 후 예외처리. strncat함수는 이어붙일 배열이 비어있을 경우 안된다.
            strncpy(postfixExp, c, 1);
      else
            strncat(postfixExp, c, 1);
@@ -141,13 +141,13 @@ void toPostfix()
         {
             x = *exp;
             charCat(&x);
-            //exp가 가리키는 문자를 임시변수 x에 저장 후, charcat함수를 호출하여 인자로 넘긴다. postfixexp 전역 배열에 저장된다.
+            //exp가 가리키는 문자를 임시변수 x에 저장 후, charcat함수를 호출하여 인자로 넘긴다. x가 postfixexp 전역 배열 끝에 이어서 저장된다.
         }
-        else if(getPriority(*exp) == lparen) 
+        else if(getPriority(*exp) == lparen)    //exp가 가리키는 문자가 왼쪽 소괄호라면 postfixpush함수를 호출하여 postfixstack에 push한다.
         {
         postfixPush(*exp);
         }
-        else if(getPriority(*exp) == rparen)
+        else if(getPriority(*exp) == rparen)    //
         {
             while((x = postfixPop()) != '(') 
             {    
