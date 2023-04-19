@@ -1,9 +1,3 @@
- /**
- * postfix.c
- *
- * School of Computer Science,
- * Chungbuk National University
- */
 #include<stdio.h>
 #include<stdlib.h>
 #include<ctype.h>
@@ -11,10 +5,8 @@
 #define MAX_STACK_SIZE 10
 #define MAX_EXPRESSION_SIZE 20
 
-/* stack 내에서 우선순위는 내림차순, lparen = 0 가장 낮음 */ 
-typedef enum{lparen=0, rparen = 9, times=7, divide = 6, plus = 5, minus=4, operand = 1
- /* 피연산자 */ /*( 왼쪽 괄호 */ /* ) 오른쪽 괄호*/ /** 곱셈 */ /* / 나눗셈 */ /*+ 덧셈 */ /*- 뺄셈 */
-} precedence;
+typedef enum{lparen=0, rparen = 9, times=7, divide = 6, plus = 5, minus=4, operand = 1} precedence;
+//연산자와 피연산자의 우선순위를 열거형으로 정의합니다. 또한 해당 열거형을 precedence로 정의합니다.
 
 char infixExp[MAX_EXPRESSION_SIZE];
 char postfixExp[MAX_EXPRESSION_SIZE];
@@ -23,6 +15,7 @@ int evalStack[MAX_STACK_SIZE];
 int postfixStackTop = -1;
 int evalStackTop = -1;
 int evalResult = 0;
+//전역 배열, 전역변수(top 변수, 최종 결과 저장 변수)를 선언합니다.
 void postfixPush(char x);
 char postfixPop();
 void evalPush(int x);
@@ -36,6 +29,7 @@ void debug();
 void reset();
 void evaluation();
 
+
  int main() {
     char command;
     do{
@@ -46,9 +40,10 @@ void evaluation();
         printf("----------------------------------------------------------------\n");
         printf("Command = ");
         scanf(" %c", &command);
+        //command를 입력받습니다.
         
         
-        switch(command) {   
+        switch(command) {   //입력 받은 command에 따라 호출 함수를 switch문을 이용하여 다르게 합니다.(즉, 입력에 따라 실행 기능이 달라집니다.)
         case 'i': case 'I':
             getInfix();
             break;
@@ -70,7 +65,7 @@ void evaluation();
             printf("\n>>>>>   Concentration!!   <<<<<");
             break;
         }
-    
+    //do-while문을 이용하여 입력된 command가 q or Q일 때 까지 해당 명령문을 반복합니다.
     }while(command != 'q' && command != 'Q');
 
  return 1;
@@ -100,9 +95,8 @@ int evalPop()
     else
         return evalStack[evalStackTop--];
 }
-/**
-* infix expression을 입력받는다. * infixExp에는 입력된 값을 저장한다. */
-void getInfix()
+
+void getInfix() //중위 표기식을 입력받아 infixexp 전역 배열에 저장합니다.
 {
     printf("Type the expression >>> ");
     scanf("%s",infixExp);
@@ -130,26 +124,24 @@ precedence getPriority(char x)
 * 문자하나를 전달받아, postfixExp에 추가 */
 void charCat(char* c)
 {
-     if (postfixExp == '\0')
+     if (postfixExp[0] == '\0')    //reset함수에서 해당 함수를 호출했을 시, postfixexp엔 
            strncpy(postfixExp, c, 1);
      else
            strncat(postfixExp, c, 1);
 }
-/**
-* infixExp의 문자를 하나씩 읽어가면서 stack을 이용하여 postfix로 변경한다. * 변경된 postfix는 postFixExp에 저장된다.
-*/
+
 void toPostfix()
 {
-/* infixExp의 문자 하나씩을 읽기위한 포인터 */ 
-    char *exp = infixExp;
-    char x; /* 문자하나를 임시로 저장하기 위한 변수 */
-/* exp를 증가시켜가면서, 문자를 읽고 postfix로 변경 */ 
-    while(*exp != '\0')
+    char *exp = infixExp;   //중위 표기식을 저장한 infixexp 시작 주소를 포인터 exp에 저장.
+    char x;                 //문자를 저장할 임시변수 선언.
+
+    while(*exp != '\0')     //exp가 가리키는 infixexp의 원소가 /0일 때 즉, 해당 문자열의 마지막까지 반복한다.
     {
-        if(getPriority(*exp) == operand)
+        if(getPriority(*exp) == operand)    //exp가 가리키는 문자를 getpriority함수로 열거형 precedence 중 무었인지 파악 후 피연산자라면 해당 명령문 실행
         {
             x = *exp;
             charCat(&x);
+            //exp가 가리키는 문자를 임시변수 x에 저장 후, charcat함수를 호출하여 인자로 넘긴다. postfixexp 전역 배열에 저장된다.
         }
         else if(getPriority(*exp) == lparen) 
         {
